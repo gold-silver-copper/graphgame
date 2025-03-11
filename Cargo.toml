@@ -1,0 +1,17 @@
+[package]
+name = "graphgame"
+version = "0.0.1"
+authors = ["gold-silver-copper"]
+edition = "2021"
+include = ["LICENSE-APACHE", "LICENSE-MIT", "**/*.rs", "Cargo.toml"]
+
+description = "graph engine"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/gold-silver-copper/graphgame"
+
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+english = { path = "../english" }
