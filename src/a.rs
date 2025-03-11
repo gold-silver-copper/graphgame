@@ -18,15 +18,6 @@ pub enum TravelDirection {
     Down,
 }
 
-/// Different types of connections between locations
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum ConnectionType {
-    Path {
-        mode: PathType,
-        direction: TravelDirection,
-    },
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PathType {
     Road,
@@ -40,7 +31,8 @@ pub enum PathType {
 #[derive(Debug, Clone)]
 pub struct Connection {
     pub destination: LocationID,
-    pub connection_type: ConnectionType,
+    pub connection_type: PathType,
+    pub direction: TravelDirection,
 }
 
 /// Represents a location in the game world
@@ -48,12 +40,12 @@ pub struct Connection {
 pub struct Location {
     pub id: LocationID,
     pub name: String,
-    pub connections: Vec<Connection>,
+    pub description: String,
 }
 
 /// Manages all locations and their connections
 pub struct LocationGraph {
-    locations: HashMap<LocationID, String>, // Store names separately
+    locations: HashMap<LocationID, Location>, // Store names separately
     connections: HashMap<LocationID, Vec<Connection>>, // Store connections here
 }
 
@@ -66,8 +58,15 @@ impl LocationGraph {
         }
     }
     /// Adds a new location
-    pub fn add_location(&mut self, id: LocationID, name: String) {
-        self.locations.insert(id, name);
+    pub fn add_location(&mut self, id: LocationID, name: &str, description: &str) {
+        self.locations.insert(
+            id,
+            Location {
+                id,
+                name: name.to_string(),
+                description: description.to_string(),
+            },
+        );
         self.connections.entry(id).or_insert_with(Vec::new);
     }
 
@@ -76,14 +75,16 @@ impl LocationGraph {
         &mut self,
         from: LocationID,
         to: LocationID,
-        connection_type: ConnectionType,
+        pt: PathType,
+        dir: TravelDirection,
     ) {
         self.connections
             .entry(from)
             .or_insert_with(Vec::new)
             .push(Connection {
                 destination: to,
-                connection_type,
+                connection_type: pt,
+                direction: dir,
             });
     }
 
