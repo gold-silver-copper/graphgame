@@ -6,8 +6,8 @@ fn main() {
     let b = English::noun("boop", &Number::Plural);
     println!("Hello, world! {}", b);
     let mut lg = LocationGraph::new();
-    lg.add_location(LocationID(1), "Village", "A small peaceful village.");
-    lg.add_location(LocationID(2), "Forest", "A dark and mysterious forest.");
+    lg.add_location(LocationID(1), "Village");
+    lg.add_location(LocationID(2), "Forest");
     lg.add_connection(
         LocationID(1),
         LocationID(2),

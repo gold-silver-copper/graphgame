@@ -36,11 +36,12 @@ pub struct Connection {
 }
 
 /// Represents a location in the game world
+/// instead of a text description or even a name, have enums values that are used to procedurally
+/// generate the description
 #[derive(Debug, Clone)]
 pub struct Location {
     pub id: LocationID,
     pub name: String,
-    pub description: String,
 }
 
 /// Manages all locations and their connections
@@ -58,13 +59,12 @@ impl LocationGraph {
         }
     }
     /// Adds a new location
-    pub fn add_location(&mut self, id: LocationID, name: &str, description: &str) {
+    pub fn add_location(&mut self, id: LocationID, name: &str) {
         self.locations.insert(
             id,
             Location {
                 id,
                 name: name.to_string(),
-                description: description.to_string(),
             },
         );
         self.connections.entry(id).or_insert_with(Vec::new);
